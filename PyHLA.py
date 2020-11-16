@@ -6,6 +6,8 @@ import statsmodels.formula.api as smf
 from collections import Counter
 import numpy as np
 import pandas as pd
+desired_width = 320
+pd.set_option('display.width', desired_width)
 import scipy.stats
 import argparse
 import time
@@ -340,59 +342,58 @@ def quantTrait(infile):
     return False
 ######################### HLAIO ############################################################
 def printSummary(alleles, freq, caseAlleles, ctrlAlleles, np, nc, nn, popCase, popCtrl, popP, popC):
-    print 'Sample size: %d'  % nn[0]
-    print 'Number of cases: %d'  % nn[1]
-    print 'Number of controls: %d'  % nn[2]
-    print
-    print 'Gene level summary'
-    print '------------------------------------------------------------------'
-    print '%12s%12s%12s%12s' % ('Gene', 'CaseCount', 'CtrlCount', 'TotalCount')
+    print('Sample size: %d'  % nn[0])
+    print('Number of cases: %d'  % nn[1])
+    print('Number of controls: %d'  % nn[2])
+    print('Gene level summary')
+    print('------------------------------------------------------------------')
+    print('%12s%12s%12s%12s' % ('Gene', 'CaseCount', 'CtrlCount', 'TotalCount'))
     for g in sorted(np.keys()):
-        print '%12s%12d%12d%12d' % (g, np[g], nc[g], np[g] + nc[g])
-    print
-    print 'Allele level summary'
-    print '------------------------------------------------------------------'
-    print "%20s" % 'Allele',
+        print('%12s%12d%12d%12d' % (g, np[g], nc[g], np[g] + nc[g]))
+
+    print('Allele level summary')
+    print('------------------------------------------------------------------')
+    print("%20s" % "Allele", end=" ")
     for a in ('CaseCount',  'CtrlCount', 'TotalCount', 'CaseFreq', 'CtrlFreq',  'TotalFreq'):
-        print "%12s" % a,
-    print
+        print("%12s" % a, end=" ")
+
     for allele in alleles:
-        print  "%20s" % allele,
+        print("\n%20s" % allele, end=" ")
         ttt = 0
         if allele in caseAlleles:
-            print "%12d" % caseAlleles[allele],
+            print("%12d" % caseAlleles[allele], end=" ")
             ttt = caseAlleles[allele]
         else:
-            print "%12d" % 0,
+            print("%12d" % 0, end=" ")
         if allele in ctrlAlleles:
-            print  "%12d" % ctrlAlleles[allele],
-            print "%12d" % (ctrlAlleles[allele] + ttt),
+            print("%12d" % ctrlAlleles[allele], end=" ")
+            print("%12d" % (ctrlAlleles[allele] + ttt), end=" ")
         else:
-            print "%12d" % 0,
-            print "%12d" % ttt,
+            print("%12d" % 0, end=" ")
+            print("%12d" % ttt, end=" ")
         for f in freq[allele]:
-            print "%12.4f" % f,
-        print
-    print '\nPopulation level summary'
-    print '------------------------------------------------------------------'
-    print "%20s" % 'Allele',
+            print("%12.4f" % f, end=" ")
+
+    print('\nPopulation level summary')
+    print('------------------------------------------------------------------')
+    print("%20s" % 'Allele', end=" ")
     for a in ('popCaseCount',  'popCaseFreq', 'popCtrlCount', 'popCtrlFreq'):
-        print "%14s" % a,
-    print
+        print("%14s" % a, end=" ")
+
     for allele in alleles:
-        print  "%20s" % allele,
+        print("\n%20s" % allele, end=" ")
         if allele in popCase:
-            print "%14d" % popCase[allele],
-            print "%14.4f" % (1.0 * popCase[allele] / popP[allele.split('*')[0]]),
+            print("%14d" % popCase[allele], end=" ")
+            print("%14.4f" % (1.0 * popCase[allele] / popP[allele.split('*')[0]]), end=" ")
         else:
-            print "%14d" % 0,
-            print "%14d" % 0,
+            print("%14d" % 0, end=" ")
+            print("%14d" % 0, end=" ")
         if allele in popCtrl:
-            print "%14d" % popCtrl[allele],
-            print "%14.4f" % (1.0 * popCtrl[allele] / popC[allele.split('*')[0]])
+            print("%14d" % popCtrl[allele], end=" ")
+            print("%14.4f" % (1.0 * popCtrl[allele] / popC[allele.split('*')[0]]), end=" ")
         else:
-            print "%14d" % 0,
-            print "%14d" % 0
+            print("%14d" % 0, end=" ")
+            print("%14d" % 0, end=" ")
 def writeSummary(alleles, freq, caseAlleles, ctrlAlleles, np, nc, nn, OUTFILE, popCase, popCtrl, popP, popC):
     fp = open(OUTFILE, 'w')
     fp.write('Sample size: %d\n'  % nn[0])
@@ -447,24 +448,24 @@ def writeSummary(alleles, freq, caseAlleles, ctrlAlleles, np, nc, nn, OUTFILE, p
             fp.write("%14d\n" % 0)
     fp.close()
 def printSummaryQuant(alleles, genes, n):
-    print 'Sample size: %d'  % n
-    print
-    print 'Gene level summary'
-    print '------------------------------------------------------------------'
-    print '%12s%12s' % ('Gene',  'TotalCount')
+    print('Sample size: %d'  % n)
+
+    print('Gene level summary')
+    print('------------------------------------------------------------------')
+    print('%12s%12s' % ('Gene',  'TotalCount'))
     for g in sorted(genes.keys()):
-        print '%12s%12d' % (g, genes[g])
-    print
-    print 'Allele level summary'
-    print '------------------------------------------------------------------'
-    print "%20s" % 'Allele',
+        print('%12s%12d' % (g, genes[g]))
+
+    print('Allele level summary')
+    print('------------------------------------------------------------------')
+    print("%20s" % 'Allele', end=" ")
     for a in ('TotalCount', 'TotalFreq'):
-        print "%12s" % a,
-    print
+        print("%12s" % a, end=" ")
+
     for allele in sorted(alleles.keys()):
-        print "%20s" % allele,
-        print "%12d" % alleles[allele],
-        print "%12.4f" % (1.0 * alleles[allele] / genes[allele.split('*')[0]])
+        print("\n%20s" % allele, end=" ")
+        print("%12d" % alleles[allele], end=" ")
+        print("%12.4f" % (1.0 * alleles[allele] / genes[allele.split('*')[0]]), end=" ")
 def writeSummaryQuant(alleles, genes, n, outfile):
     fp = open(outfile, 'w')
     fp.write('Sample size: %d\n\n'  % n)
@@ -483,65 +484,65 @@ def writeSummaryQuant(alleles, genes, n, outfile):
         fp.write("%12.4f\n" % (1.0 * alleles[allele] / genes[allele.split('*')[0]]))
     fp.close()
 def printAssocChiFisher(assoc, test, permP=None, permN=None, permNA=None):
-    print "%20s" % 'Allele',
+    print("%20s" % 'Allele', end=" ")
     for a in ("A_case","B_case","A_ctrl","B_ctrl","F_case","F_ctrl","Freq"):
-        print "%8s" % a,
+        print("%8s" % a, end=" ")
     if test == 'chisq':
-        print "%10s" % 'P_Chisq',
-        print "%8s" % 'Chisq',
-        print "%4s" % 'DF',
+        print("%10s" % 'P_Chisq', end=" ")
+        print("%8s" % 'Chisq', end=" ")
+        print("%4s" % 'DF', end=" ")
     else:
-        print "%10s" % 'P_FET',
+        print("%10s" % 'P_FET', end=" ")
     for a in ("OR","L95","U95"):
-        print "%8s" % a,
+        print("%8s" % a, end=" ")
     if permP is None:
-        print "%10s" % 'P_adj'
+        print("%10s" % 'P_adj', end=" ")
     else:
-        print "%10s" % 'P_adj',
-        print "%10s" % 'P_perm',
-        print "%8s" % 'PermN',
-        print "%8s" % 'permNA'
+        print("%10s" % 'P_adj', end=" ")
+        print("%10s" % 'P_perm', end=" ")
+        print("%8s" % 'PermN', end=" ")
+        print("%8s" % 'permNA', end=" ")
     for a in sorted(assoc.keys()):
-        print "%20s" % a,
+        print("\n%20s" % a, end=" ")
         for i in range(4):
-            print "%8d" % assoc[a][i],
+            print("%8d" % assoc[a][i], end=" ")
         for i in range(4,7):
-            print "%8.4f" % assoc[a][i],
+            print("%8.4f" % assoc[a][i], end=" ")
         if assoc[a][7] == 'NA':
-            print "%10s" % 'NA',
+            print("%10s" % 'NA', end=" ")
         elif assoc[a][7] > 0.001:
-            print "%10.4f" % assoc[a][7],
+            print("%10.4f" % assoc[a][7], end=" ")
         else:
-            print "%10.2e" % assoc[a][7],
+            print("%10.2e" % assoc[a][7], end=" ")
         if test =='chisq':
-            print "%8.4f" % assoc[a][8],
-            print "%4d" % assoc[a][9],
+            print("%8.4f" % assoc[a][8], end=" ")
+            print("%4d" % assoc[a][9], end=" ")
             for i in range(10, 13):
-                print "%8.4f" % assoc[a][i],
+                print("%8.4f" % assoc[a][i], end=" ")
             if assoc[a][13] == 'NA':
-                print "%10s" % 'NA',
+                print("%10s" % 'NA', end=" ")
             elif assoc[a][13] > 0.001:
-                print "%10.4f" % assoc[a][13],
+                print("%10.4f" % assoc[a][13], end=" ")
             else:
-                print "%10.2e" % assoc[a][13],
+                print("%10.2e" % assoc[a][13], end=" ")
         else:
             for i in range(8, 11):
-                print "%8.4f" % assoc[a][i],
+                print("%8.4f" % assoc[a][i], end=" ")
             if assoc[a][11] == 'NA':
-                print "%10s" % 'NA',
+                print("%10s" % 'NA', end=" ")
             elif assoc[a][11] > 0.001:
-                print "%10.4f" % assoc[a][11],
+                print("%10.4f" % assoc[a][11], end=" ")
             else:
-                print "%10.2e" % assoc[a][11],
+                print("%10.2e" % assoc[a][11], end=" ")
         if permP is None:
-            print
+            print(" ", end=" ")
         else:
             if permP[a] > 0.001:
-                print "%10.4f" % permP[a],
+                print("%10.4f" % permP[a], end=" ")
             else:
-                print "%10.2e" % permP[a],
-            print "%8d" % permN[a],
-            print "%8d" % permNA[a]
+                print("%10.2e" % permP[a], end=" ")
+            print("%8d" % permN[a], end=" ")
+            print("%8d" % permNA[a], end=" ")
 def writeAssocChiFisher(assoc, test, outfile, permP=None, permN=None, permNA=None):
     fp = open(outfile, 'w')
     fp.write("%20s" % 'Allele')
@@ -606,54 +607,52 @@ def writeAssocChiFisher(assoc, test, outfile, permP=None, permN=None, permNA=Non
     fp.close()
 def printAssocRaw(assoc, alleles, permP=None, permN=None, permNA=None):
     for h in ('Gene', 'Chisq',  'DF', 'P_raw'):
-        print "%10s" % h,
+        print("%10s" % h)
     if permP is not None:
         for h in ('P_perm', 'PermN', 'permNA'):
-            print "%10s" % h,
-    print
+            print("%10s" % h)
+
     for a in assoc:
-        print "%10s" % a,
-        print "%10.4f" % assoc[a][0],
-        print "%10d" % assoc[a][1],
+        print("%10s" % a)
+        print("%10.4f" % assoc[a][0])
+        print("%10d" % assoc[a][1])
         if assoc[a][2] == 'NA':
-                print "%10s" % 'NA',
+                print("%10s" % 'NA')
         elif assoc[a][2] > 0.001:
-            print "%10.4f" % assoc[a][2],
+            print("%10.4f" % assoc[a][2])
         else:
-            print "%10.2e" % assoc[a][2],
+            print("%10.2e" % assoc[a][2])
         if permP is None:
-            print
+            print()
         else:
             if permP[a] > 0.001:
-                print "%10.4f" % permP[a],
+                print("%10.4f" % permP[a])
             else:
-                print "%10.2e" % permP[a],
-            print "%10d" % permN[a],
-            print "%10d" % permNA[a]
+                print("%10.2e" % permP[a])
+            print("%10d" % permN[a])
+            print("%10d" % permNA[a])
     ### alleles
-    print '-----------------------------------------------------------------------------'
-    print 'Alleles were used:'
-    print '-----------------------------------------------------------------------------'
+    print('-----------------------------------------------------------------------------')
+    print('Alleles were used:')
+    print('-----------------------------------------------------------------------------')
     g = ''
     i = 0
     for a in sorted(alleles):
         if g == '':
             g = a.split('*')[0]
-            print "%20s" % a,
+            print("%20s" % a)
             i +=1
         elif g != a.split('*')[0]:
             g = a.split('*')[0]
-            print
-            print
-            print "%20s" % a,
+            print("%20s" % a)
             i = 1
         else:
-            print "%20s" % a,
+            print("%20s" % a)
             i += 1
             if i % 5 == 0:
-                print
+
                 i = 0
-    print
+
 def writeAssocRaw(assoc, alleles, outfile, permP=None, permN=None, permNA=None):
     fp = open(outfile, 'w')
     for h in ('Gene', 'Chisq',  'DF', 'P_raw'):
@@ -707,47 +706,43 @@ def writeAssocRaw(assoc, alleles, outfile, permP=None, permN=None, permNA=None):
     fp.close()
 def printAssocScore(assoc, alleles, permP=None, permN=None, permNA=None):
     for h in ('Gene', 'U'):
-        print "%10s" % h,
+        print("%10s" % h)
     if permP is not None:
         for h in ('P_perm', 'PermN', 'permNA'):
-            print "%10s" % h,
-    print
+            print("%10s" % h)
+
     for a in assoc:
-        print "%10s" % a,
-        print "%10.4f" % assoc[a],
+        print("%10s" % a)
+        print("%10.4f" % assoc[a])
         if permP is None:
-            print
+            print()
         else:
             if permP[a] > 0.001:
-                print "%10.4f" % permP[a],
+                print("%10.4f" % permP[a])
             else:
-                print "%10.2e" % permP[a],
-            print "%10s" % permN[a],
-            print "%10s" % permNA[a]
+                print("%10.2e" % permP[a])
+            print("%10s" % permN[a])
+            print("%10s" % permNA[a])
     ### alleles
-    print '-----------------------------------------------------------------------------'
-    print 'Alleles were used:'
-    print '-----------------------------------------------------------------------------'
+    print('-----------------------------------------------------------------------------')
+    print('Alleles were used:')
+    print('-----------------------------------------------------------------------------')
     g = ''
     i = 0
     for a in sorted(alleles):
         if g == '':
             g = a.split('*')[0]
-            print "%20s" % a,
+            print("%20s" % a)
             i +=1
         elif g != a.split('*')[0]:
             g = a.split('*')[0]
-            print
-            print
-            print "%20s" % a,
+            print("%20s" % a)
             i = 1
         else:
-            print "%20s" % a,
+            print("%20s" % a)
             i += 1
             if i % 5 == 0:
-                print
                 i = 0
-    print
 def writeAssocScore(assoc, alleles, outfile, permP=None, permN=None, permNA=None):
     fp = open(outfile, 'w')
     for h in ('Gene', 'U'):
@@ -793,53 +788,53 @@ def writeAssocScore(assoc, alleles, outfile, permP=None, permN=None, permNA=None
     fp.write('\n')
     fp.close()
 def printLogistic(assoc, permP=None, permN=None, permNA=None):
-    print "%20s" % 'Allele',
+    print("%20s" % 'Allele', end=" ")
     for a in ("A_case","B_case","A_ctrl","B_ctrl","F_case","F_ctrl","Freq"):
-        print "%8s" % a,
-    print "%10s" % 'P_Logit',
+        print("%8s" % a, end=" ")
+    print("%10s" % 'P_Logit', end=" ")
     for a in ("OR","L95","U95"):
-        print "%8s" % a,
+        print("%8s" % a, end=" ")
     if permP is None:
-        print "%10s" % 'P_adj'
+        print("%10s" % 'P_adj', end=" ")
     else:
-        print "%10s" % 'P_adj',
-        print "%10s" % 'P_perm',
-        print "%8s" % 'PermN',
-        print "%8s" % 'permNA'
+        print("%10s" % 'P_adj', end=" ")
+        print("%10s" % 'P_perm', end=" ")
+        print("%8s" % 'PermN', end=" ")
+        print("%8s" % 'permNA', end=" ")
     for a in sorted(assoc.keys()):
-        print "%20s" % a,
+        print("\n%20s" % a, end=" ")
         for i in range(4):
-            print "%8d" % assoc[a][i],
+            print("%8d" % assoc[a][i], end=" ")
         for i in range(4,7):
-            print "%8.4f" % assoc[a][i],
+            print("%8.4f" % assoc[a][i], end=" ")
         if assoc[a][7] == 'NA':
-            print "%10s" % 'NA',
+            print("%10s" % 'NA', end=" ")
         elif assoc[a][7] > 0.001:
-            print "%10.4f" % assoc[a][7],
+            print("%10.4f" % assoc[a][7], end=" ")
         else:
-            print "%10.2e" % assoc[a][7],
+            print("%10.2e" % assoc[a][7], end=" ")
         for i in range(8, 11):
                 if assoc[a][i] == 'NA':
-                    print "%8s" % 'NA',
+                    print("%8s" % 'NA', end=" ")
                 else:
-                    print "%8.4f" % assoc[a][i],
+                    print("%8.4f" % assoc[a][i], end=" ")
         if assoc[a][11] == 'NA':
-            print "%10s" % 'NA',
+            print("%10s" % 'NA', end=" ")
         elif assoc[a][11] > 0.001:
-            print "%10.4f" % assoc[a][11],
+            print("%10.4f" % assoc[a][11], end=" ")
         else:
-            print "%10.2e" % assoc[a][11],
+            print("%10.2e" % assoc[a][11], end=" ")
         if permP is None:
-            print
+            print('', end=" ")
         else:
             if permP[a] == 'NA':
-                print "%10s" % 'NA',
+                print("%10s" % 'NA', end=" ")
             elif permP[a] > 0.001:
-                print "%10.4f" % permP[a],
+                print("%10.4f" % permP[a], end=" ")
             else:
-                print "%10.2e" % permP[a],
-            print "%8d" % permN[a],
-            print "%8d" % permNA[a]
+                print("%10.2e" % permP[a], end=" ")
+            print("%8d" % permN[a], end=" ")
+            print("%8d" % permNA[a], end=" ")
 def writeLogistic(assoc, outfile, permP=None, permN=None, permNA=None):
     fp = open(outfile, 'w')
     fp.write("%20s" % 'Allele')
@@ -890,44 +885,44 @@ def writeLogistic(assoc, outfile, permP=None, permN=None, permNA=None):
             fp.write("%8d" % permN[a])
             fp.write("%8d\n" % permNA[a])
 def printLinear(assoc, permP=None, permN=None, permNA=None):
-    print "%20s" % 'Allele',
-    print "%8s" % "Freq",
-    print "%10s" % 'P_Linear',
+    print("%20s" % 'Allele', end=" ")
+    print("%8s" % "Freq", end=" ")
+    print("%10s" % 'P_Linear', end=" ")
     for a in ("beta","L95","U95"):
-        print "%8s" % a,
+        print("%8s" % a, end=" ")
     if permP is None:
-        print "%10s" % 'P_adj'
+        print("%10s" % 'P_adj', end=" ")
     else:
-        print "%10s" % 'P_adj',
-        print "%10s" % 'P_perm',
-        print "%8s" % 'PermN',
-        print "%8s" % 'permNA'
+        print("%10s" % 'P_adj', end=" ")
+        print("%10s" % 'P_perm', end=" ")
+        print("%8s" % 'PermN', end=" ")
+        print("%8s" % 'permNA', end=" ")
     for a in sorted(assoc.keys()):
-        print "%20s" % a,
-        print "%8.4f" % assoc[a][0],
+        print("\n%20s" % a, end=" ")
+        print("%8.4f" % assoc[a][0], end=" ")
         if assoc[a][1] == 'NA':
-            print "%10s" % 'NA',
+            print("%10s" % 'NA', end=" ")
         elif assoc[a][1] > 0.001:
-            print "%10.4f" % assoc[a][1],
+            print("%10.4f" % assoc[a][1], end=" ")
         else:
-            print "%10.2e" % assoc[a][1],
+            print("%10.2e" % assoc[a][1], end=" ")
         for i in range(2, 5):
-                print "%8.4f" % assoc[a][i],
+                print("%8.4f" % assoc[a][i], end=" ")
         if assoc[a][5] == 'NA':
-            print "%10s" % 'NA',
+            print("%10s" % 'NA', end=" ")
         elif assoc[a][5] > 0.001:
-            print "%10.4f" % assoc[a][5],
+            print("%10.4f" % assoc[a][5], end=" ")
         else:
-            print "%10.2e" % assoc[a][5],
+            print("%10.2e" % assoc[a][5], end=" ")
         if permP is None:
-            print
+            print('', end=" ")
         else:
             if permP[a] > 0.001:
-                print "%10.4f" % permP[a],
+                print("%10.4f" % permP[a], end=" ")
             else:
-                print "%10.2e" % permP[a],
-            print "%8d" % permN[a],
-            print "%8d" % permNA[a]
+                print("%10.2e" % permP[a], end=" ")
+            print("%8d" % permN[a], end=" ")
+            print("%8d" % permNA[a], end=" ")
 def writeLinear(assoc, outfile, permP=None, permN=None, permNA=None):
     fp = open(outfile, 'w')
     fp.write("%20s" % 'Allele')
@@ -969,34 +964,34 @@ def writeLinear(assoc, outfile, permP=None, permN=None, permNA=None):
             fp.write("%8d" % permN[a])
             fp.write("%8d\n" % permNA[a])
 def printAssocDelta(assoc, perm=None):
-    print "%20s" % 'Allele',
+    print("%20s" % 'Allele')
     for a in ("Delta","P_FET","OR","P_adj"):
-        print "%10s" % a,
+        print("%10s" % a)
     if perm is None:
-        print
+        print()
     else:
-        print "%10s" % "P_perm"
+        print("%10s" % "P_perm")
     for a in sorted(assoc.keys()):
-        print "%20s" % a,
-        print "%10.4f" % assoc[a][0],
+        print("%20s" % a)
+        print("%10.4f" % assoc[a][0])
         if assoc[a][1] == 'NA':
-            print "%10s" % 'NA',
+            print("%10s" % 'NA')
         elif assoc[a][1] > 0.001:
-            print "%10.4f" % assoc[a][1],
+            print("%10.4f" % assoc[a][1])
         else:
-            print "%10.2e" % assoc[a][1],
-        print "%10.4f" % assoc[a][2],
+            print("%10.2e" % assoc[a][1])
+        print("%10.4f" % assoc[a][2])
         if assoc[a][3] > 0.001:
-            print "%10.4f" % assoc[a][3],
+            print("%10.4f" % assoc[a][3])
         else:
-            print "%10.2e" % assoc[a][3],
+            print("%10.2e" % assoc[a][3])
         if perm is None:
-            print
+            print()
         else:
             if assoc[a][4] > 0.001:
-                print "%10.4f" % assoc[a][4]
+                print("%10.4f" % assoc[a][4])
             else:
-                print "%10.2e" % assoc[a][4]
+                print("%10.2e" % assoc[a][4])
 def writeAssocDelta(assoc, outfile, perm=None):
     fp = open(outfile, 'w')
     fp.write("%20s" % 'Allele')
@@ -1210,7 +1205,7 @@ def assocADRChiFisher(infile, digit, freq, test='chisq', model = 'allelic', adju
                                 permNL[a] += 1
                 pn += 1
                 if pn % pf == 1:
-                    print 'permutation {}/{} ...'.format(pn, perm)
+                    print('permutation {}/{} ...'.format(pn, perm))
             if pn == perm:
                 break
         for a in assoc:
@@ -1322,7 +1317,7 @@ def assocRaw(infile, digit, freq, exclude=None, perm=None, seed=None):
                                 permNL[g] += 1
                 pn += 1
                 if pn % pf == 1:
-                    print 'permutation {}/{} ...'.format(pn, perm)
+                    print('permutation {}/{} ...'.format(pn, perm))
             if pn == perm:
                 break
         for a in assoc:
@@ -1418,7 +1413,7 @@ def assocScoreU(infile, digit, freq, exclude=None, perm=None, seed=None):
                                 permNL[g] += 1
                 pn += 1
                 if pn % pf == 1:
-                    print 'permutation {}/{} ...'.format(pn, perm)
+                    print('permutation {}/{} ...'.format(pn, perm))
             if pn == perm:
                 break
         for a in assoc:
@@ -1527,7 +1522,7 @@ def assocDelta(infile, digit, freq=0.05, adjust='FDR', exclude=None, perm=None, 
                     permN[allele] += 1
             pn += 1
             if pn % pf == 1:
-                print 'permutation {}/{} ...'.format(pn, perm)
+                print('permutation {}/{} ...'.format(pn, perm))
             if pn == perm:
                 break
         for a in assoc:
@@ -1652,7 +1647,7 @@ def writeRecode(infile, digits, test, model):
     tmp = tmp + '.txt'
     f = open(tmp,'w')
     ans, header = allelicRecode(infile, digits, test, model)
-    tab = string.maketrans('*:', '__')
+    tab = str.maketrans('*:', '__')
     header = map(lambda i: i.translate(tab), header)
     f.write('\t'.join(header))
     f.write('\n')
@@ -1708,15 +1703,15 @@ def regressionLogistic(infile, digits, freq, model = 'additive', adjust = 'FDR',
                 n4 -= n3
                 myformula = 'PHT ~ ' + allele
                 if covfile is None:
-                    mydata = geno.ix[:, ['IID', 'PHT', allele]]
+                    mydata = geno.lox[:, ['IID', 'PHT', allele]]
                 else:
                     for name in covname:
                         if name in covindex:
                             myformula = myformula + ' + ' + name
                         else:
-                            print 'can not find covariant name ' + '"' + name + '" in covariant file'
+                            print('can not find covariant name ' + '"' + name + '" in covariant file')
                             sys.exit()
-                    geno9 = geno.ix[:, ['IID', 'PHT', allele]]
+                    geno9 = geno.loc[:, ['IID', 'PHT', allele]]
                     mydata = pd.merge(geno9, cov, on='IID', how='inner')
                 try:
                     lr = smf.logit(formula = myformula, data = mydata).fit(maxiter=100, disp=False)
@@ -1806,7 +1801,7 @@ def regressionLogistic(infile, digits, freq, model = 'additive', adjust = 'FDR',
             pf = 2
         for i in range(perm):
             if i % pf == 1:
-                print 'permutation {}/{} ...'.format(i, perm)
+                print('permutation {}/{} ...'.format(i, perm))
             xxx = geno['PHT'].values.flatten()
             random.shuffle(xxx)
             geno['PHT'] = xxx
@@ -1820,11 +1815,11 @@ def regressionLogistic(infile, digits, freq, model = 'additive', adjust = 'FDR',
                 if nname in assoc:
                     myformula = 'PHT ~ ' + allele
                     if covfile is None:
-                        mydata = geno.ix[:, ['IID', 'PHT', allele]]
+                        mydata = geno.loc[:, ['IID', 'PHT', allele]]
                     else:
                         for name in covname:
                             myformula = myformula + ' + ' + name
-                        geno9 = geno.ix[:, ['IID', 'PHT', allele]]
+                        geno9 = geno.loc[:, ['IID', 'PHT', allele]]
                         mydata = pd.merge(geno9, cov, on='IID', how='inner')
                     try:
                         lr = smf.logit(formula = myformula, data = mydata).fit(maxiter=100, disp=False)
@@ -1889,15 +1884,15 @@ def regressionLinear(infile, digits, freq, model = 'additive', adjust = 'FDR', e
                 usedAllele.append(allele)
                 myformula = 'PHT ~ ' + allele
                 if covfile is None:
-                    mydata = geno.ix[:, ['IID', 'PHT', allele]]
+                    mydata = geno.loc[:, ['IID', 'PHT', allele]]
                 else:
-                    geno9 = geno.ix[:, ['IID', 'PHT', allele]]
+                    geno9 = geno.loc[:, ['IID', 'PHT', allele]]
                     mydata = pd.merge(geno9, cov, on='IID', how='inner')
                     for name in covname:
                         if name in covindex:
                             myformula = myformula + ' + ' + name
                         else:
-                            print 'can not find covariant name ' + '"' + name + '" in covariant file'
+                            print('can not find covariant name ' + '"' + name + '" in covariant file')
                             sys.exit()
                 try:
                     lr = smf.ols(formula = myformula, data = mydata).fit(maxiter=100, disp=False)
@@ -1972,7 +1967,7 @@ def regressionLinear(infile, digits, freq, model = 'additive', adjust = 'FDR', e
             pf = 2
         for i in range(perm):
             if i % pf == 1:
-                print 'permutation {}/{} ...'.format(i, perm)
+                print('permutation {}/{} ...'.format(i, perm))
             xxx = geno['PHT'].values.flatten()
             random.shuffle(xxx)
             geno['PHT'] = xxx
@@ -1986,11 +1981,11 @@ def regressionLinear(infile, digits, freq, model = 'additive', adjust = 'FDR', e
                 if nname in assoc:
                     myformula = 'PHT ~ ' + allele
                     if covfile is None:
-                        mydata = geno.ix[:, ['IID', 'PHT', allele]]
+                        mydata = geno.loc[:, ['IID', 'PHT', allele]]
                     else:
                         for name in covname:
                             myformula = myformula + ' + ' + name
-                        geno9 = geno.ix[:, ['IID', 'PHT', allele]]
+                        geno9 = geno.loc[:, ['IID', 'PHT', allele]]
                         mydata = pd.merge(geno9, cov, on='IID', how='inner')
                     try:
                         lr = smf.ols(formula = myformula, data = mydata).fit(maxiter=100, disp=False)
@@ -2018,8 +2013,9 @@ def regressionLinear(infile, digits, freq, model = 'additive', adjust = 'FDR', e
     return assoc, permP, permN, permNA
 ###################  HLAAA  ################################################################
 def keyDicts(dict1, dict2):
-    k1 = dict1.keys()
+    k1 = list(dict1.keys())
     k1.extend(dict2.keys())
+    k1.extend(list(dict2.keys()))
     return set(k1)
 def getGenes(alleles):
     genes = []
@@ -2132,14 +2128,14 @@ def getSeq(alleles, seq, consensus=True):
                 if len(tmp):
                     aseq[allele] = consensusSeq(tmp)
                 else:
-                    print 'no sequence is avaiable for: %s' % allele
+                    print('no sequence is avaiable for: %s' % allele)
             else: # use the first allele seq
                 for k in sorted(seq.keys()):
                     if allele in k:
                         aseq[allele] = seq[k]
                         break
                 if allele not in aseq:
-                    print 'no sequence is avaiable for: %s' % allele
+                    print('no sequence is avaiable for: %s' % allele)
     return aseq
 def aaAlign(case, ctrl, seq):
     '''
@@ -2294,16 +2290,16 @@ def printAA(aln):
                     s = i*50+r*10
                     e = s + 10
                     if r == 0:
-                        print "%-20s%-11s" % (k[0], k[1][s:e]),
+                        print("%-20s%-11s" % (k[0], k[1][s:e]))
                     elif r == 4:
-                        print "%-11s" % k[1][s:e],
+                        print("%-11s" % k[1][s:e])
                         if e < length:
-                            print "%-5d" % e
+                            print("%-5d" % e)
                         else:
-                            print "%-5d" % length
+                            print("%-5d" % length)
                     else:
-                        print "%-11s" % k[1][s:e],
-            print
+                        print("%-11s" % k[1][s:e])
+
 def writeAA(aln, outfile):
     fw = open(outfile, 'w')
     for g in sorted(aln.keys()):
@@ -2326,23 +2322,23 @@ def writeAA(aln, outfile):
                         fw.write("%-11s" % k[1][s:e])
             fw.write('\n')
 def printAAA(assoc):
-    print '%-20s' % 'ID',
+    print('%-20s' % 'ID', end=" ")
     for h in ('A_case', 'B_case', 'A_ctrl', 'B_ctrl'):
-        print '%8s' % h,
-    print '%10s' % 'P',
-    print '%8s' % 'OR',
-    print '\t%s' % 'ACR'
+        print('%8s' % h, end=" ")
+    print('%10s' % 'P', end=" ")
+    print('%8s' % 'OR', end=" ")
+    print('\t%s' % 'ACR', end=" ")
     for k in sorted(assoc.keys()):
-        print "%-20s" % (k[0] + '_' + str(k[1]) + '_' + k[2]),
+        print("\n%-20s" % (k[0] + '_' + str(k[1]) + '_' + k[2]), end=" ")
         for i in range(4):
-            print "%8d" % assoc[k][i],
+            print("%8d" % assoc[k][i], end=" ")
         if assoc[k][4] == 'NA':
-            print "%10s" % 'NA',
+            print("%10s" % 'NA', end=" ")
         elif assoc[k][4] > 0.001:
-            print "%10.5f" % assoc[k][4],
+            print("%10.5f" % assoc[k][4], end=" ")
         else:
-            print "%10.2e" % assoc[k][4],
-        print "%8.2f" % assoc[k][5],
+            print("%10.2e" % assoc[k][4], end=" ")
+        print("%8.2f" % assoc[k][5], end=" ")
         ##
         awrs = ''
         si = 0
@@ -2352,7 +2348,7 @@ def printAAA(assoc):
             else:
                 awrs = it
             si += 1
-        print '\t%s' % awrs
+        print('\t%s' % awrs, end=" ")
 def writeAAA(assoc, outfile):
     fw = open(outfile, 'w')
     fw.write('%-20s' % 'ID')
@@ -2624,34 +2620,33 @@ def printInteract(assoc, level):
     header = ('ID1', 'ID2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9','P10')
     for h in header:
         if h == 'ID1' or h == 'ID2':
-            print "%-12s" % h,
+            print("%-12s" % h)
         else:
-            print "%12s" % h,
+            print("%12s" % h)
     header2 = ('OR3', 'OR4', 'OR5', 'OR6', 'OR7', 'OR8', 'OR9','OR10')
     for h in header2:
-        print "%10s" % h,
-    print
+        print("%10s" % h)
 
     for k in sorted(assoc.keys()):
         if level == 'residue':
-            print "%-12s" % (k[0]+'_'+str(k[1])+'_'+k[2]),
-            print "%-12s" % (k[3]+'_'+str(k[4])+'_'+k[5]),
+            print("%-12s" % (k[0]+'_'+str(k[1])+'_'+k[2]))
+            print("%-12s" % (k[3]+'_'+str(k[4])+'_'+k[5]))
         else:
-            print "%-12s"  % k[0],
-            print "%-12s" % k[1],
+            print("%-12s"  % k[0])
+            print("%-12s" % k[1])
         for i in range(2, 10):
             if assoc[k][i] == 'NA':
-                print "%12s" % "NA",
+                print("%12s" % "NA")
             elif assoc[k][i] > 0.001:
-                print "%12.4f" % assoc[k][i],
+                print("%12.4f" % assoc[k][i])
             else:
-                print "%12.2e" % assoc[k][i],
+                print("%12.2e" % assoc[k][i])
         for i in range(12, len(assoc[k])):
             if assoc[k][i] > 100:
-                print "%10.0f" %  assoc[k][i],
+                print("%10.0f" %  assoc[k][i])
             else:
-                print "%10.2f" %  assoc[k][i],
-        print
+                print("%10.2f" %  assoc[k][i])
+
 def writeInteract(assoc, level, outfile):
     fw = open(outfile, 'w')
     header = ('ID1', 'ID2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9','P10')
@@ -2790,27 +2785,25 @@ def zygosityAllele(keys, caseGeno, ctrlGeno, test):
         ans[k] = ps
     return ans
 def printZygosity(ans, level):
-    print '%-20s' % 'ID',
+    print('%-20s' % 'ID')
     for h in ('Hom_P', 'Het_P', 'Zyg_P'):
-        print '%12s' % h,
+        print('%12s' % h)
     for h in ('Hom_OR', 'Het_OR', 'Zyg_OR'):
-        print '%8s' % h,
-    print
+        print('%8s' % h)
     for k in sorted(ans.keys()):
         if level == 'residue':
-            print '%-20s' % (k[0] + '_' + str(k[1]) + '_' + k[2]),
+            print('%-20s' % (k[0] + '_' + str(k[1]) + '_' + k[2]))
         else:
-            print '%-20s' % k,
+            print('%-20s' % k)
         for i in range(3):
             if ans[k][i] == 'NA':
-                print "%12s" % 'NA',
+                print("%12s" % 'NA')
             elif ans[k][i] > 0.001:
-                print "%12.4f" % ans[k][i],
+                print("%12.4f" % ans[k][i])
             else:
-                print "%12.2e" % ans[k][i],
+                print("%12.2e" % ans[k][i])
         for i in range(3,6):
-            print "%8.4f" % ans[k][i],
-        print
+            print("%8.4f" % ans[k][i])
 def writeZygosity(ans, level, outfile):
     fw = open(outfile, 'w')
     fw.write('%-20s' % 'ID')
@@ -2899,74 +2892,73 @@ LEVEL = args['level'] if 'level' in args else None
 
 INT = args['interaction'] if 'interaction' in args else None
 ##########################  log infor  ##################################################################
-print "@-------------------------------------------------------------@"
-print "|       PyHLA       |     v1.1.1      |      16 Oct 2017      |"
-print "|-------------------------------------------------------------|"
-print "|  (C) 2017 Felix Yanhui Fan, GNU General Public License, v2  |"
-print "|-------------------------------------------------------------|"
-print "|    For documentation, citation & bug-report instructions:   |"
-print "|          http://felixfan.github.io/PyHLA                    |"
-print "@-------------------------------------------------------------@"
-print "\n\tOptions in effect:"
-print "\t--input", INFILE
+print("@-------------------------------------------------------------@")
+print("|       PyHLA       |     v1.1.1      |      16 Oct 2017      |")
+print("|-------------------------------------------------------------|")
+print("|  (C) 2017 Felix Yanhui Fan, GNU General Public License, v2  |")
+print("|-------------------------------------------------------------|")
+print("|    For documentation, citation & bug-report instructions:   |")
+print("|          http://felixfan.github.io/PyHLA                    |")
+print("@-------------------------------------------------------------@")
+print("\n\tOptions in effect:")
+print("\t--input", INFILE)
 if PRINT:
-    print "\t--print"
+    print("\t--print")
 if SUMMARY:
-    print "\t--digit", DIGIT
-    print "\t--summary"
+    print("\t--digit", DIGIT)
+    print("\t--summary")
 elif ASSOC:
-    print "\t--digit", DIGIT
-    print "\t--assoc"
-    print "\t--test", TEST
+    print("\t--digit", DIGIT)
+    print("\t--assoc")
+    print("\t--test", TEST)
     if TEST == 'chisq' or TEST == 'fisher':
         mm = ['allelic', 'dom', 'rec']
         if MODEL in mm:
-            print "\t--model", MODEL
+            print("\t--model", MODEL)
         else:
             sys.exit('model should be one of {}'.format(mm))
     elif TEST == 'logistic' or 'linear':
         mm = ['additive', 'dom', 'rec']
         if MODEL in mm:
-            print "\t--model", MODEL
+            print("\t--model", MODEL)
         else:
             sys.exit('model should be one of {}'.format(mm))
         if COVFILE:
-            print "\t--covar", COVFILE
+            print("\t--covar", COVFILE)
             if COVNAME:
-                print "\t--covar-name", COVNAME
-    print "\t--freq", FREQ
+                print("\t--covar-name", COVNAME)
+    print("\t--freq", FREQ)
     if EXCLUDE:
-        print "\t--exclude", EXCLUDE
+        print("\t--exclude", EXCLUDE)
     if TEST != 'raw' and TEST != 'score':
-        print "\t--adjust", ADJUST
+        print("\t--adjust", ADJUST)
     if PERM:
-        print "\t--perm", PERM
+        print("\t--perm", PERM)
         if SEED:
-            print "\t--seed", SEED
+            print("\t--seed", SEED)
 elif AAA:
-    print "\t--assoc-AA"
-    print "\t--test", TEST
+    print("\t--assoc-AA")
+    print("\t--test", TEST)
     if CONSENSUS:
-        print "\t--consensus"
+        print("\t--consensus")
 elif ALN:
-    print "\t--align"
+    print("\t--align")
     if CONSENSUS:
-        print "\t--consensus"
+        print("\t--consensus")
 elif ZYG or INT:
     if ZYG:
-        print "\t--zygosity"
+        print("\t--zygosity")
     elif INT:
-        print "\t--interaction"
-    print "\t--test", TEST
-    print "\t--level", LEVEL
+        print("\t--interaction")
+    print("\t--test", TEST)
+    print("\t--level", LEVEL)
     if LEVEL == 'allele':
-        print "\t--digit", DIGIT
-        print "\t--freq", FREQ
+        print("\t--digit", DIGIT)
+        print("\t--freq", FREQ)
     else:
         if CONSENSUS:
-            print "\t--consensus"
-print "\t--out", OUTFILE
-print
+            print("\t--consensus")
+print("\t--out", OUTFILE)
 ################################ run program ############################################################
 if SUMMARY:
     if quantTrait(INFILE):
@@ -3089,7 +3081,7 @@ else:
     sys.exit("one of the following option must be used: \n\n%s\n%s\n%s\n%s\n%s\n%s\n" % c)
 ###############################  time used #############################################################
 usedtime = time.time() - strattime
-print "Time used:",
+print("\nTime used:")
 if usedtime >=60:
     ts = int(usedtime) % 60
     usedtime = int(usedtime) / 60
@@ -3097,12 +3089,12 @@ if usedtime >=60:
     usedtime = int(usedtime) / 60
     th = int(usedtime) % 60
     if th > 0:
-        print "%d hours"  % th,
-        print "%d minutes"  % tm,
+        print("%d hours"  % th)
+        print("%d minutes"  % tm)
     elif tm > 0:
-        print "%d minutes"  % tm,
+        print("%d minutes"  % tm)
 else:
     ts = usedtime
-print '%.2f seconds' % ts
-print "Finished at ",
-print time.strftime("%H:%M:%S %d %b %Y")
+print('%.2f seconds' % ts)
+print("Finished at ")
+print(time.strftime("%H:%M:%S %d %b %Y"))
