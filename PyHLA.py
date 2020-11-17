@@ -1703,7 +1703,7 @@ def regressionLogistic(infile, digits, freq, model = 'additive', adjust = 'FDR',
                 n4 -= n3
                 myformula = 'PHT ~ ' + allele
                 if covfile is None:
-                    mydata = geno.lox[:, ['IID', 'PHT', allele]]
+                    mydata = geno.loc[:, ['IID', 'PHT', allele]]
                 else:
                     for name in covname:
                         if name in covindex:
@@ -2290,15 +2290,15 @@ def printAA(aln):
                     s = i*50+r*10
                     e = s + 10
                     if r == 0:
-                        print("%-20s%-11s" % (k[0], k[1][s:e]))
+                        print("\n%-20s%-11s" % (k[0], k[1][s:e]), end=" ")
                     elif r == 4:
-                        print("%-11s" % k[1][s:e])
+                        print("%-11s" % k[1][s:e], end=" ")
                         if e < length:
-                            print("%-5d" % e)
+                            print("%-5d" % e, end=" ")
                         else:
-                            print("%-5d" % length)
+                            print("%-5d" % length, end=" ")
                     else:
-                        print("%-11s" % k[1][s:e])
+                        print("%-11s" % k[1][s:e], end=" ")
 
 def writeAA(aln, outfile):
     fw = open(outfile, 'w')
@@ -2620,32 +2620,32 @@ def printInteract(assoc, level):
     header = ('ID1', 'ID2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9','P10')
     for h in header:
         if h == 'ID1' or h == 'ID2':
-            print("%-12s" % h)
+            print("%-12s" % h, end=" ")
         else:
-            print("%12s" % h)
+            print("%12s" % h, end=" ")
     header2 = ('OR3', 'OR4', 'OR5', 'OR6', 'OR7', 'OR8', 'OR9','OR10')
     for h in header2:
-        print("%10s" % h)
+        print("%10s" % h, end=" ")
 
     for k in sorted(assoc.keys()):
         if level == 'residue':
-            print("%-12s" % (k[0]+'_'+str(k[1])+'_'+k[2]))
-            print("%-12s" % (k[3]+'_'+str(k[4])+'_'+k[5]))
+            print("\n%-12s" % (k[0]+'_'+str(k[1])+'_'+k[2]), end=" ")
+            print("%-12s" % (k[3]+'_'+str(k[4])+'_'+k[5]), end=" ")
         else:
-            print("%-12s"  % k[0])
-            print("%-12s" % k[1])
+            print("\n%-12s"  % k[0], end=" ")
+            print("%-12s" % k[1], end=" ")
         for i in range(2, 10):
             if assoc[k][i] == 'NA':
-                print("%12s" % "NA")
+                print("%12s" % "NA", end=" ")
             elif assoc[k][i] > 0.001:
-                print("%12.4f" % assoc[k][i])
+                print("%12.4f" % assoc[k][i], end=" ")
             else:
-                print("%12.2e" % assoc[k][i])
+                print("%12.2e" % assoc[k][i], end=" ")
         for i in range(12, len(assoc[k])):
             if assoc[k][i] > 100:
-                print("%10.0f" %  assoc[k][i])
+                print("%10.0f" %  assoc[k][i], end=" ")
             else:
-                print("%10.2f" %  assoc[k][i])
+                print("%10.2f" %  assoc[k][i], end=" ")
 
 def writeInteract(assoc, level, outfile):
     fw = open(outfile, 'w')
@@ -2785,25 +2785,25 @@ def zygosityAllele(keys, caseGeno, ctrlGeno, test):
         ans[k] = ps
     return ans
 def printZygosity(ans, level):
-    print('%-20s' % 'ID')
+    print('%-20s' % 'ID', end=" ")
     for h in ('Hom_P', 'Het_P', 'Zyg_P'):
-        print('%12s' % h)
+        print('%12s' % h, end=" ")
     for h in ('Hom_OR', 'Het_OR', 'Zyg_OR'):
-        print('%8s' % h)
+        print('%8s' % h, end=" ")
     for k in sorted(ans.keys()):
         if level == 'residue':
-            print('%-20s' % (k[0] + '_' + str(k[1]) + '_' + k[2]))
+            print('\n%-20s' % (k[0] + '_' + str(k[1]) + '_' + k[2]), end=" ")
         else:
-            print('%-20s' % k)
+            print('\n%-20s' % k, end=" ")
         for i in range(3):
             if ans[k][i] == 'NA':
-                print("%12s" % 'NA')
+                print("%12s" % 'NA', end=" ")
             elif ans[k][i] > 0.001:
-                print("%12.4f" % ans[k][i])
+                print("%12.4f" % ans[k][i], end=" ")
             else:
-                print("%12.2e" % ans[k][i])
+                print("%12.2e" % ans[k][i], end=" ")
         for i in range(3,6):
-            print("%8.4f" % ans[k][i])
+            print("%8.4f" % ans[k][i], end=" ")
 def writeZygosity(ans, level, outfile):
     fw = open(outfile, 'w')
     fw.write('%-20s' % 'ID')
